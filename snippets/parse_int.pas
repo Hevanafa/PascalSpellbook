@@ -18,9 +18,7 @@ var
   n: longint;
 begin
   readln(line);
-  n := strtoint(line);
-
-  writeln(n);
-
-  flush(stderr); flush(stdout)
+  n := StrToInt(line);
+  writeln(n)
 end.
+
