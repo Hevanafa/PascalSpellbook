@@ -34,10 +34,13 @@ type
   private
     fSourceCode: string;
     fMetadata: TSnippetMetadata;
+    fFilename: string;
   public
-    procedure LoadFromCode(const sourceCode: string);
     property Metadata: TSnippetMetadata read fMetadata;
     property SourceCode: string read fSourceCode;
+    property Filename: string read fFilename write fFilename;
+
+    procedure LoadFromCode(const aSourceCode: string);
     destructor Destroy; override;
   end;
 
@@ -118,12 +121,12 @@ end;
 
 { TSnippet }
 
-procedure TSnippet.LoadFromCode(const sourceCode: string);
+procedure TSnippet.LoadFromCode(const aSourceCode: string);
 begin
-  fSourceCode:= sourceCode;
+  fSourceCode:= aSourceCode;
 
   fMetadata := TSnippetMetadata.create;
-  fMetadata.LoadFromCode(sourceCode)
+  fMetadata.LoadFromCode(aSourceCode)
 end;
 
 destructor TSnippet.Destroy;
@@ -153,6 +156,7 @@ begin
 
     snippet := TSnippet.create;
     snippet.LoadFromCode(reader.text);
+    snippet.Filename := ExtractFileName(path);
 
     snippetList.Add(snippet);
     SnippetListBox.AddItem(snippet.fMetadata.title, nil);
