@@ -88,6 +88,26 @@ begin
 
     if trimmed.ToLower.Contains('title:') then
       self.Title := trim(copy(trimmed, 7));
+    if trimmed.ToLower.Contains('author:') then
+      self.Author := trim(copy(trimmed, 7));
+
+    if trimmed.ToLower.Contains('description:') then
+      self.Description := trim(copy(trimmed, 7));
+    if trimmed.ToLower.Contains('category:') then
+      self.Category := trim(copy(trimmed, 7));
+
+    if trimmed.ToLower.Contains('requires:') then
+      self.Requires := trim(copy(trimmed, 7));
+    if trimmed.ToLower.Contains('tags:') then
+      self.Tags := trim(copy(trimmed, 7));
+
+    if trimmed.ToLower.Contains('website:') then
+      self.Website := trim(copy(trimmed, 7));
+    if trimmed.ToLower.Contains('licence:') then
+      self.Licence := trim(copy(trimmed, 7));
+
+    if trimmed.ToLower.Contains('version:') then
+      self.Version := trim(copy(trimmed, 7));
   end;
 end;
 
