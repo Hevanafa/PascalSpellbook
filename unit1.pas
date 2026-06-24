@@ -2,6 +2,7 @@ unit Unit1;
 
 {$Mode ObjFPC}
 {$H+}
+{$Notes OFF}
 
 interface
 
