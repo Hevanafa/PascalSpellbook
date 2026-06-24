@@ -25,14 +25,15 @@ object Form1: TForm1
     Top = 24
     Width = 475
     Anchors = [akTop, akLeft, akRight, akBottom]
+    Font.CharSet = ANSI_CHARSET
     Font.Height = -13
-    Font.Name = 'Courier New'
+    Font.Name = 'Consolas'
     Font.Pitch = fpFixed
-    Font.Quality = fqNonAntialiased
+    Font.Quality = fqDraft
     ParentColor = False
     ParentFont = False
     TabOrder = 1
-    Gutter.Width = 57
+    Gutter.Width = 55
     Gutter.MouseActions = <>
     RightGutter.Width = 0
     RightGutter.MouseActions = <>
@@ -495,7 +496,7 @@ object Form1: TForm1
         MarkupInfo.Foreground = clNone
       end
       object SynGutterLineNumber1: TSynGutterLineNumber
-        Width = 17
+        Width = 15
         MouseActions = <>
         MarkupInfo.Background = clBtnFace
         MarkupInfo.Foreground = clNone
