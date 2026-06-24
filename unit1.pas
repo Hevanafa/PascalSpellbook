@@ -34,6 +34,8 @@ type
 
   TForm1 = class(TForm)
     SnippetList: TListBox;
+    SynEdit1: TSynEdit;
+    SynFreePascalSyn1: TSynFreePascalSyn;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
 
