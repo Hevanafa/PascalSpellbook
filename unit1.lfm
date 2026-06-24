@@ -2,10 +2,10 @@ object Form1: TForm1
   Left = 347
   Height = 240
   Top = 250
-  Width = 320
+  Width = 505
   Caption = 'Form1'
   ClientHeight = 240
-  ClientWidth = 320
+  ClientWidth = 505
   LCLVersion = '4.6.0.0'
   OnShow = FormShow
   object SnippetList: TListBox
