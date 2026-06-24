@@ -32,12 +32,12 @@ type
 
   TSnippet = class
   private
-    fSourceCode: string;
+    fRawText: string;
     fMetadata: TSnippetMetadata;
     fFilename: string;
   public
     property Metadata: TSnippetMetadata read fMetadata;
-    property SourceCode: string read fSourceCode;
+    property RawText: string read fRawText;
     property Filename: string read fFilename write fFilename;
 
     procedure LoadFromCode(const aSourceCode: string);
@@ -124,7 +124,7 @@ end;
 
 procedure TSnippet.LoadFromCode(const aSourceCode: string);
 begin
-  fSourceCode:= aSourceCode;
+  fRawText:= aSourceCode;
 
   fMetadata := TSnippetMetadata.create;
   fMetadata.LoadFromCode(aSourceCode)
@@ -174,7 +174,7 @@ begin
 
   with snippetList[SnippetListBox.ItemIndex] do begin
     FilenameLabel.caption := 'Filename: ' + Filename;
-    SynEdit1.Text := SourceCode
+    SynEdit1.Text := RawText
   end;
 end;
 
