@@ -1,9 +1,9 @@
 {
-  Title: Parse Integer
+  Title: Split string to tokens
   Author: Hevanafa
   Description:
   Category: Basics
-  Requires: (none)
+  Requires: SysUtils
   Tags: beginner, output
   Website: https://github.com/Hevanafa/PascalSpellbook
   Licence: MIT
@@ -15,9 +15,13 @@ uses
 
 var
   line: string;
-  n: longint;
+  strary: TStringArray;
+  s: string;
 begin
-  readln(line);
-  n := StrToInt(line);
-  writeln(n)
-end.
+  ReadLn(line);
+  strary := line.split(' ');
+  
+  for s in strary do begin
+    { do stuff }
+  end;
+end;
