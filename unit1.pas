@@ -11,9 +11,12 @@ uses
 
 type
 
-  { TMetadata }
+  { TSnippet }
 
-  TMetadata = class
+  TSnippet = class
+  private
+    fSourceCode: string;
+
   public
     Title: string;
     Author: string;
@@ -25,10 +28,12 @@ type
     Licence: string;
     Version: string;
 
-    procedure LoadFromCode(const code: string);
+    procedure LoadFromCode(const sourceCode: string);
+
+    property SourceCode: string read fSourceCode;
   end;
 
-  TMetadataList = specialize TFPGObjectList<TMetadata>;
+  TMetadataList = specialize TFPGObjectList<TSnippet>;
 
   { TForm1 }
 
@@ -59,15 +64,17 @@ uses
 const
   SnippetsDir = '.\snippets\';
 
-{ TMetadata }
+{ TSnippet }
 
-procedure TMetadata.LoadFromCode(const code: string);
+procedure TSnippet.LoadFromCode(const sourceCode: string);
 var
   lines: TStringArray;
   line, trimmed: string;
   beginMetadata: boolean;
 begin
-  lines := code.Split(LineEnding);
+  fSourceCode:= sourceCode;
+
+  lines := sourceCode.Split(LineEnding);
 
   for line in lines do begin
     trimmed := Trim(line);
@@ -89,7 +96,7 @@ var
   filelist: TStringList;
   path: string;
   reader: TStringList;
-  metadata: TMetadata;
+  metadata: TSnippet;
 begin
   metadataList := TMetadataList.create;
   reader := TStringList.create;
@@ -99,7 +106,7 @@ begin
   for path in filelist do begin
     reader.LoadFromFile(path);
 
-    metadata := TMetadata.create;
+    metadata := TSnippet.create;
     metadata.LoadFromCode(reader.text);
 
     SnippetList.AddItem(metadata.title, nil);
