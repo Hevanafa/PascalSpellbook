@@ -51,10 +51,12 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    CopySnippetButton: TButton;
     FilenameLabel: TLabel;
     SnippetListBox: TListBox;
     SynEdit1: TSynEdit;
     SynFreePascalSyn1: TSynFreePascalSyn;
+    procedure CopySnippetButtonClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
@@ -74,7 +76,7 @@ implementation
 {$R *.lfm}
 
 uses
-  FileUtil;
+  Clipbrd, FileUtil, Windows;
 
 const
   SnippetsDir = '.\snippets\';
@@ -213,6 +215,17 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   snippetList.free
+end;
+
+procedure TForm1.CopySnippetButtonClick(Sender: TObject);
+begin
+  if SynEdit1.Text = '' then begin
+    MessageBox(0, 'Nothing to copy!', 'Copy Snippet', MB_OK);
+    exit
+  end;
+
+  Clipboard.AsText := SynEdit1.text;
+  MessageBox(0, 'Copied to clipboard!', 'Copy Snippet', MB_OK or MB_ICONINFORMATION);
 end;
 
 end.
