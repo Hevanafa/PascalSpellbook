@@ -25,7 +25,7 @@ type
     Licence: string;
     Version: string;
 
-    constructor FromCode(const code: string);
+    procedure LoadFromCode(const code: string);
   end;
 
   TMetadataList = specialize TFPGObjectList<TMetadata>;
@@ -34,6 +34,7 @@ type
 
   TForm1 = class(TForm)
     SnippetList: TListBox;
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
 
   private
@@ -50,13 +51,15 @@ implementation
 
 {$R *.lfm}
 
+uses
+  FileUtil;
 
 const
   SnippetsDir = '.\snippets\';
 
 { TMetadata }
 
-constructor TMetadata.FromCode(const code: string);
+procedure TMetadata.LoadFromCode(const code: string);
 var
   lines: TStringArray;
   line, trimmed: string;
@@ -81,34 +84,34 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 var
-  searchRec: TSearchRec;
-  targetDir: string;
-  filename: string;
+  filelist: TStringList;
+  path: string;
   reader: TStringList;
   metadata: TMetadata;
 begin
-  targetDir := SnippetsDir;
-
   metadataList := TMetadataList.create;
   reader := TStringList.create;
 
-  if FindFirst(targetDir + '*.pas', faAnyFile, searchRec) = 0 then begin
-    repeat
-      if (searchRec.Name <> '.') and (searchRec.Name <> '..') then begin
-        if (searchRec.Attr and faDirectory) = 0 then begin
-          filename := searchRec.name;
-          reader.LoadFromFile(SnippetsDir + filename);
-          metadata := TMetadata.FromCode(reader.text);
+  filelist := FindAllFiles(SnippetsDir, '*.pas', false);
 
-          SnippetList.AddItem(metadata.title, nil);
+  for path in filelist do begin
+    reader.LoadFromFile(path);
 
-          reader.free
-        end;
-      end;
-    until FindNext(searchRec) <> 0;
+    metadata := TMetadata.create;
+    metadata.LoadFromCode(reader.text);
 
-    FindClose(searchRec)
+    SnippetList.AddItem(metadata.title, nil);
+
+    metadata.free;
+    reader.free
   end;
+
+  filelist.free
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  metadataList.free
 end;
 
 end.

@@ -7,6 +7,7 @@ object Form1: TForm1
   ClientHeight = 240
   ClientWidth = 505
   LCLVersion = '4.6.0.0'
+  OnClose = FormClose
   OnShow = FormShow
   object SnippetList: TListBox
     Left = 4
