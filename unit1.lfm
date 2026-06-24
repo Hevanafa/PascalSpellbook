@@ -3,7 +3,7 @@ object Form1: TForm1
   Height = 400
   Top = 250
   Width = 640
-  Caption = 'Form1'
+  Caption = 'Pascal Spellbook v0.1'
   ClientHeight = 400
   ClientWidth = 640
   LCLVersion = '4.6.0.0'
