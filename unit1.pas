@@ -38,14 +38,16 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    SnippetList: TListBox;
+    SnippetListBox: TListBox;
     SynEdit1: TSynEdit;
     SynFreePascalSyn1: TSynFreePascalSyn;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure SnippetListBoxClick(Sender: TObject);
+    procedure SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
 
   private
-    metadataList: TMetadataList;
+    snippetList: TMetadataList;
 
   public
 
@@ -96,9 +98,9 @@ var
   filelist: TStringList;
   path: string;
   reader: TStringList;
-  metadata: TSnippet;
+  snippet: TSnippet;
 begin
-  metadataList := TMetadataList.create;
+  snippetList := TMetadataList.create;
   reader := TStringList.create;
 
   filelist := FindAllFiles(SnippetsDir, '*.pas', false);
@@ -106,21 +108,33 @@ begin
   for path in filelist do begin
     reader.LoadFromFile(path);
 
-    metadata := TSnippet.create;
-    metadata.LoadFromCode(reader.text);
+    snippet := TSnippet.create;
+    snippet.LoadFromCode(reader.text);
 
-    SnippetList.AddItem(metadata.title, nil);
+    SnippetListBox.AddItem(snippet.title, nil);
 
-    metadata.free;
+    snippet.free;
     reader.free
   end;
 
   filelist.free
 end;
 
+procedure TForm1.SnippetListBoxClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
+begin
+  if SnippetListBox.ItemIndex = -1 then exit;
+
+  meta;
+end;
+
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  metadataList.free
+  snippetList.free
 end;
 
 end.
