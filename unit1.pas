@@ -100,14 +100,14 @@ begin
     if not beginMetadata then continue;
 
     if trimmed.ToLower.Contains('title:') then
-      self.Title := trim(copy(trimmed, 7));
+      self.Title := trim(copy(trimmed, length('title:') + 1));
     if trimmed.ToLower.Contains('author:') then
-      self.Author := trim(copy(trimmed, 7));
+      self.Author := trim(copy(trimmed, length('author:') + 1));
 
     if trimmed.ToLower.Contains('description:') then
-      self.Description := trim(copy(trimmed, 7));
+      self.Description := trim(copy(trimmed, length('description:') + 1));
     if trimmed.ToLower.Contains('category:') then
-      self.Category := trim(copy(trimmed, 7));
+      self.Category := trim(copy(trimmed, length('category:') + 1));
 
     if trimmed.ToLower.Contains('requires:') then
       self.Requires := trim(copy(trimmed, 7));
