@@ -49,6 +49,7 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    FilenameLabel: TLabel;
     SnippetListBox: TListBox;
     SynEdit1: TSynEdit;
     SynFreePascalSyn1: TSynFreePascalSyn;
@@ -171,7 +172,10 @@ procedure TForm1.SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
 begin
   if SnippetListBox.ItemIndex = -1 then exit;
 
-  SynEdit1.Text := snippetList[SnippetListBox.ItemIndex].SourceCode
+  with snippetList[SnippetListBox.ItemIndex] do begin
+    FilenameLabel.caption := 'Filename: ' + Filename;
+    SynEdit1.Text := SourceCode
+  end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
