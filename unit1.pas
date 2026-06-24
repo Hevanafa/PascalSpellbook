@@ -43,7 +43,6 @@ type
     SynFreePascalSyn1: TSynFreePascalSyn;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
-    procedure SnippetListBoxClick(Sender: TObject);
     procedure SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
 
   private
@@ -100,6 +99,8 @@ var
   reader: TStringList;
   snippet: TSnippet;
 begin
+  SynEdit1.clear;
+
   snippetList := TMetadataList.create;
   reader := TStringList.create;
 
@@ -111,25 +112,20 @@ begin
     snippet := TSnippet.create;
     snippet.LoadFromCode(reader.text);
 
+    snippetList.Add(snippet);
     SnippetListBox.AddItem(snippet.title, nil);
 
-    snippet.free;
     reader.free
   end;
 
   filelist.free
 end;
 
-procedure TForm1.SnippetListBoxClick(Sender: TObject);
-begin
-
-end;
-
 procedure TForm1.SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
 begin
   if SnippetListBox.ItemIndex = -1 then exit;
 
-  meta;
+  SynEdit1.Text := snippetList[SnippetListBox.ItemIndex].SourceCode
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
