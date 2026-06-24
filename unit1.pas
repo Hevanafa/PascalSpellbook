@@ -12,13 +12,9 @@ uses
 
 type
 
-  { TSnippet }
+  { TSnippetMetadata }
 
-  TSnippet = class
-  private
-    fSourceCode: string;
-
-  public
+  TSnippetMetadata = class
     Title: string;
     Author: string;
     Description: string;
@@ -30,11 +26,22 @@ type
     Version: string;
 
     procedure LoadFromCode(const sourceCode: string);
-
-    property SourceCode: string read fSourceCode;
   end;
 
-  TMetadataList = specialize TFPGObjectList<TSnippet>;
+  { TSnippet }
+
+  TSnippet = class
+  private
+    fSourceCode: string;
+    fMetadata: TSnippetMetadata;
+  public
+    procedure LoadFromCode(const sourceCode: string);
+    property Metadata: TSnippetMetadata read fMetadata;
+    property SourceCode: string read fSourceCode;
+    destructor Destroy; override;
+  end;
+
+  TSnippetList = specialize TFPGObjectList<TSnippet>;
 
   { TForm1 }
 
@@ -47,7 +54,7 @@ type
     procedure SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
 
   private
-    snippetList: TMetadataList;
+    snippetList: TSnippetList;
 
   public
 
@@ -66,16 +73,14 @@ uses
 const
   SnippetsDir = '.\snippets\';
 
-{ TSnippet }
+{ TSnippetMetadata }
 
-procedure TSnippet.LoadFromCode(const sourceCode: string);
+procedure TSnippetMetadata.LoadFromCode(const sourceCode: string);
 var
   lines: TStringArray;
   line, trimmed: string;
   beginMetadata: boolean;
 begin
-  fSourceCode:= sourceCode;
-
   lines := sourceCode.Split(LineEnding);
 
   for line in lines do begin
@@ -111,6 +116,22 @@ begin
   end;
 end;
 
+{ TSnippet }
+
+procedure TSnippet.LoadFromCode(const sourceCode: string);
+begin
+  fSourceCode:= sourceCode;
+
+  fMetadata := TSnippetMetadata.create;
+  fMetadata.LoadFromCode(sourceCode)
+end;
+
+destructor TSnippet.Destroy;
+begin
+  fMetadata.free;
+  inherited Destroy
+end;
+
 { TForm1 }
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -122,7 +143,7 @@ var
 begin
   SynEdit1.clear;
 
-  snippetList := TMetadataList.create;
+  snippetList := TSnippetList.create;
   reader := TStringList.create;
 
   filelist := FindAllFiles(SnippetsDir, '*.pas', false);
@@ -134,7 +155,7 @@ begin
     snippet.LoadFromCode(reader.text);
 
     snippetList.Add(snippet);
-    SnippetListBox.AddItem(snippet.title, nil);
+    SnippetListBox.AddItem(snippet.fMetadata.title, nil);
 
     reader.free
   end;
