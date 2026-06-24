@@ -182,11 +182,11 @@ begin
   SynEdit1.clear;
 
   snippetList := TSnippetList.create;
-  reader := TStringList.create;
 
   filelist := FindAllFiles(SnippetsDir, '*.pas', false);
 
   for path in filelist do begin
+    reader := TStringList.create;
     reader.LoadFromFile(path);
 
     snippet := TSnippet.create;
@@ -199,7 +199,9 @@ begin
     reader.free
   end;
 
-  filelist.free
+  filelist.free;
+
+  SynEdit1.Text := 'Pick a snippet from the list to start';
 end;
 
 procedure TForm1.SnippetListBoxSelectionChange(Sender: TObject; User: boolean);
