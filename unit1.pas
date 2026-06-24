@@ -42,7 +42,7 @@ type
     property SourceCode: string read fSourceCode;
     property Filename: string read fFilename write fFilename;
 
-    procedure LoadFromCode(const aSourceCode: string);
+    procedure LoadFromCode(const aRawText: string);
     destructor Destroy; override;
   end;
 
@@ -124,12 +124,42 @@ end;
 
 { TSnippet }
 
-procedure TSnippet.LoadFromCode(const aSourceCode: string);
+procedure TSnippet.LoadFromCode(const aRawText: string);
+var
+  lines: TStringArray;
+  line: string;
+  chomped: string;
+  passedMetadata: boolean;
+  skipFirstLines: boolean;
 begin
-  fRawText:= aSourceCode;
-
+  { fRawText:= aRawText; }
   fMetadata := TSnippetMetadata.create;
-  fMetadata.LoadFromCode(aSourceCode)
+  fMetadata.LoadFromCode(aRawText);
+
+  lines := aRawText.split(#10);
+
+  passedMetadata := false;
+  skipFirstLines := true;
+
+  fSourceCode := '';
+
+  for line in lines do begin
+    chomped := line.TrimRight;
+
+    if trim(line) = '}' then begin
+      passedMetadata := true;
+      continue
+    end;
+
+    if not passedMetadata then continue;
+
+    if trim(line) <> '' then
+      skipFirstLines := false;
+
+    if skipFirstLines then continue;
+
+    fSourceCode := fSourceCode + chomped + LineEnding
+  end;
 end;
 
 destructor TSnippet.Destroy;
