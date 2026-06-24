@@ -464,6 +464,7 @@ object Form1: TForm1
     Lines.Strings = (
       'SynEdit1'
     )
+    MaxLeftChar = 144
     VisibleSpecialChars = [vscSpace, vscTabAtLast]
     ReadOnly = True
     SelectedColor.BackPriority = 50
